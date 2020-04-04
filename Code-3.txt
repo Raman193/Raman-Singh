@@ -1,0 +1,80 @@
+#include<bits/stdc++.h>
+#define IO std :: ios_base :: sync_with_stdio(0); cin.tie(0); cout.tie(0);
+#define int long long
+#define double long double
+#define vi vector<int>
+#define vvi vector<vi>
+#define pii pair<int,int>
+#define vii vector<pii>
+#define nl '\n'
+#define yy "YES\n"
+#define nn "NO\n"
+#define mp map
+#define ump unordered_map
+#define ve vector
+#define pb push_back
+#define all(v) (v).begin(), (v).end()
+#define rall(v) (v).rbegin(), (v).rend()
+#define setp(x) setprecision(x)
+#define f first
+#define s second
+#define inf LONG_MAX
+#define mod 1000000007
+
+using namespace std;
+const int N = 1500;
+signed main()
+{
+        IO;
+        int t;
+        cin >> t;
+        for(int k = 1; k <= t; k++)
+        {
+            int n;
+            cin >> n;
+            //vector <int> timeline(N);
+            //vector <pair<int,int>> act(n);
+            vector <int> adj[N];
+            int mxn = 0;
+            for(int i = 0; i < n; i++){
+                int l,r;
+                cin >> l >> r;
+                adj[l].pb(i + 1);
+                adj[r].pb(-i - 1);
+                mxn = max({mxn,l,r});
+            }
+            bool ok = true;
+            string result = string(n,' ');
+            int arr[2] = {1,1};
+            string name = "CJ";
+            vi out(N);
+            for(int i = 0; i < mxn + 1; i++)
+            {
+                sort(all(adj[i]));
+                for(int x : adj[i]){
+                    if(x > 0){
+                        int use;
+                        if(arr[0] > 0)  use = 0;
+                        else if(arr[1] > 0) use = 1;
+                        else{
+                            ok = false;
+                            break;
+                        }
+                        result[x - 1] = name[use];
+                        out[x] = use;
+                        arr[use]--;
+                    }
+                    else{
+                        int ind = -x;
+                        arr[out[ind]] = 1;
+                    }
+                }
+                if(!ok) break;
+            }
+            if(!ok){
+                cout<<"Case #"<<k<<": " << "IMPOSSIBLE\n";
+                continue;
+            }
+            cout<<"Case #"<<k<<": "<< result << nl;
+        }
+}
